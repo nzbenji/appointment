@@ -1,31 +1,17 @@
 import React, { Component } from 'react';
-import Calendar from 'react-calendar'
-
+import {Route} from 'react-router-dom';
 import './App.css';
 
+import View from './components/View'
+import Home from './components/Home'
+
 class App extends Component {
-  constructor(props) {
-    super(props)
-    
-    this.state = {
-      date: new Date()
-    }
-  }
-
-  onChange = date => {
-    this.setState({ date })
-
-  }
-
   render() {
-    console.log(this.state.date.toString())
-    //console.log(this.state.date)
     return (
       <div className="App">
-        <Calendar 
-          onChange={ this.onChange }
-          value={ this.state.date }
-        />
+      <Route exact path="/" component={Home} />
+      <Route exact path="/appointment" component={View} />
+        
       </div>
     );
   }
