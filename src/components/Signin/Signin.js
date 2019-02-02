@@ -39,9 +39,13 @@ const LoginForm = ({onRouteChange}) => (
             </Link>
           </Segment>
         </Form>
+        <Link to="/register">
         <Message>
-          New to us? <a href='#'>Sign Up</a>
-        </Message>
+            Sign Up
+            {/* <a href='#'>Sign Up</a> */}
+          </Message>         
+        </Link>
+
       </Grid.Column>
     </Grid>
   </div>
