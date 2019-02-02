@@ -7,7 +7,10 @@ import './App.css';
 
 import View from './components/View'
 import Home from './components/Home'
-import Signin from './components/SIgnin/Signin'
+import LoginForm from './components/SIgnin/Signin'
+import SigninBtn from './components/SIgnin/SIgninBtn'
+import SignoutBtn from './components/Signout/SignoutBtn'
+
 
 class App extends Component {
   constructor(props) {
@@ -18,29 +21,32 @@ class App extends Component {
     }
   }
 
-  onRouteChange = () => {
+  onRouteChange = (route) => {
     this.setState({
-      route: 'home'
+      route: route
     })
   }
+
   render() {
     console.log(this.state.route)
     return (
       <div className="App">
       { this.state.route === 'signin' 
         ?
-        <Link to={"/login"}>Sign in</Link>
+        <Link to={"/login"}> <SigninBtn /> </Link>
         :
-        <Link to={'/signout'}>Sign out</Link>
+        <Link to={'/'}>
+        <Route exact path="/" 
+        render={(props) => <SignoutBtn {...props} onRouteChange={this.onRouteChange} /> } 
+        />
+        </Link>
     }
-      
-      
 
       <Route exact path="/login" 
-      component={Signin} 
-      render={() => <onRouteChange onRouteChange={this.onRouteChange} />} 
+      render={(props) => <LoginForm {...props} onRouteChange={this.onRouteChange} /> /* Make sure user cant click on 
+        sign in when already logged in */} 
       />
-      <Route exact path="/signout" />
+       
       <Route exact path="/" component={Home} />
       <Route exact path="/appointment" component={View} />
 

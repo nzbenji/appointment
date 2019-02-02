@@ -32,7 +32,7 @@ const LoginForm = ({onRouteChange}) => (
               <Button 
               color='teal' 
               fluid size='large'
-              onClick={onRouteChange}
+              onClick={() => onRouteChange('home')}
               >
                 Login
               </Button>
