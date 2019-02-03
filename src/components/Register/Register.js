@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Input, Container, Header } from 'semantic-ui-react';
+import {Link} from 'react-router-dom';
 
 class Register extends Component {
     constructor(props) {
@@ -13,12 +14,6 @@ class Register extends Component {
         }
     }
 
-    // onChange = event => {
-    //     const { name, value } = event.target
-    //     this.setState({
-    //         [name] : value
-    //     })
-    // }
     onEmailChange = (event) => {
         this.setState({
           email: event.target.value
@@ -84,10 +79,13 @@ class Register extends Component {
                         placeholder="Password"
                         fluid
                     />
-                    <Button 
-                        onClick={this.onSubmit}
-                    >
-                    Submit</Button>
+                    <Link to={'/'}>
+                        <Button 
+                            onClick={this.onSubmit}
+                        >
+                        Submit</Button>
+                    </Link>
+                    
                 </Container>
             </div>
         )

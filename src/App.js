@@ -53,12 +53,12 @@ class App extends Component {
     console.log(this.state.route)
     return (
       <div className="App">
-      <Route exact path="/register" component={Register} />
       <Route exact path="/register" 
         render={(props) => <Register {...props} loadUser={this.loadUser} /> }
       />
+      <Redirect to="/" />
 
-      { this.state.route === 'signin' 
+      { this.state.route !== 'signin' 
         ?
         <div>
           <Link to={"/login"}> <SigninBtn /> </Link>
