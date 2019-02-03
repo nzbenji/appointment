@@ -1,10 +1,13 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const server = express()
+const bcrypt = require('bcrypt-nodejs')
+const cors = require('cors')
 
 server.use(bodyParser.json())
+server.use(cors())
 
-const PORT = 3000
+const PORT = 3001
 
 const db = {
     users: [
@@ -27,6 +30,12 @@ server.get('/', (req, res) => {
     res.send(db.users)
 })
 server.post('/login', (req, res) => {
+    // bcrypt.compare("1234", hash, function(err, res) {
+    // });
+    // bcrypt.compare("veggies", hash, function(err, res) {
+    // });
+    
+
     if(req.body.email === db.users[0].email &&
         req.body.password === db.users[0].password) {
             res.json('success')
@@ -51,6 +60,13 @@ server.get('/profile/:id', (req, res) => {
 
 server.post('/register', (req, res) => {
     const { email, name, password } = req.body
+
+    //return an encrypted hash password
+    bcrypt.hash(password, null, null, (err, hash) => {
+        // Store hash in your password DB.
+        console.log(hash)
+    });
+
     db.users.push({
         id: '123', 
         name: name,
@@ -60,6 +76,9 @@ server.post('/register', (req, res) => {
     //grabs last added item in arr
     res.json(db.users[db.users.length-1])
 })
+
+
+
 
 server.listen(PORT, () => {
     console.log('running on ', PORT)
