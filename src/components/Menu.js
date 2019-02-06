@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Menu } from 'semantic-ui-react'
 
+
 class Header extends Component {
   state = { activeItem: 'home' }
 
