@@ -27,54 +27,51 @@ server.post('/register', (req, res) => {
         .then(res.sendStatus(200))
 })
 
-// server.post('/login', (req, res) => {
-//     if(req.body.email === db.users[0].email &&
-//         req.body.password === db.users[0].password) {
-//             res.json('success')
-//         } else {
-//             res.status(400).json('err loggin in')
-//         }
-// })
+server.post('/login', (req, res) => {
+    if(req.body.email === db.users[0].email &&
+        req.body.password === db.users[0].password) {
+            res.json('success')
+        } else {
+            res.status(400).json('err loggin in')
+        }
+})
 
-// server.get('/profile/:id', (req, res) => {
-//     const { id } = req.params
-//     let found = false
-//     db.users.forEach(user => {
-//         if(user.id === id) {
-//             found = true
-//             return res.json(user)
-//         }
-//     })
-//     if(!found) {
-//         res.status(404).json('no such user')
-//     }
-// })
+server.get('/profile/:id', (req, res) => {
+    db.profile(Number(req.params.id))
+        .then(user => {
+            res.json(user)
+        })
+        .catch(err => res.status(400).json('Not found'))
+    // db.users.forEach(user => {
+    //     if(user.id === id) {
+    //         found = true
+    //         return res.json(user)
+    //     }
+    // })
+    // if(!found) {
+    //     res.status(404).json('no such user')
+    // }
+})
 
-// server.post('/register', (req, res) => {
-//     const { email, name, password } = req.body
+server.post('/register', (req, res) => {
 
-//     //return an encrypted hash password
-//     bcrypt.hash(password, null, null, (err, hash) => {
-//         // Store hash in your password DB.
-//         console.log(hash)
-//     });
+    // //return an encrypted hash password
+    // bcrypt.hash(password, null, null, (err, hash) => {
+    //     // Store hash in your password DB.
+    //     console.log(hash)
+    // });
 
-//     db.users.push({
-//         id: '123', 
-//         name: name,
-//         email: email,
-//         password: password
-//     })
-//     //grabs last added item in arr
-//     res.json(db.users[db.users.length-1])
-// })
+    db.registerUser(req.body)
+        .then(user => {
+            res.json(user[0])
+        })
+        .catch(err => res.status(400).json('unable to register'))
+
+})
 
 server.listen(PORT, () => {
     console.log('running on ', PORT)
 })
-
-
-
 
 // const db = {
 //     users: [

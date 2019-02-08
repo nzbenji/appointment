@@ -4,7 +4,8 @@ const connection = require('knex')(config)
 
 module.exports = {
   getUsers,
-  registerUser
+  registerUser,
+  profile
 }
 
 function getUsers(db = connection) {
@@ -18,4 +19,11 @@ function registerUser(user, db = connection) {
       email: user.email,
       password: user.password
     })
+    
+}
+
+function profile(id, db = connection) {
+  return db('register')
+    .where('id', id)
+    .first()
 }
