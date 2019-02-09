@@ -12,6 +12,10 @@ import SigninBtn from './components/Signin/SigninBtn'
 import SignoutBtn from './components/Signout/SignoutBtn'
 import Register from './components/Register/Register'
 
+import Menu from './components/Menu'
+
+import { getUsers } from './api'
+
 
 class App extends Component {
   constructor(props) {
@@ -29,7 +33,7 @@ class App extends Component {
   }
 
   loadUser = (data) => {
-    this.state = ({user:{
+    this.setState = ({user:{
       id: data.id,
       name: data.name,
       email: data.email,
@@ -40,7 +44,7 @@ class App extends Component {
   componentDidMount() {
     fetch('http://localhost:3001/')
       .then(response => response.json())
-      .then(console.log)
+      .then(console.log) 
   }
 
   onRouteChange = (route) => {
@@ -54,11 +58,16 @@ class App extends Component {
     return (
       <div className="App">
       <Route exact path="/register" 
-        render={(props) => <Register {...props} loadUser={this.loadUser} /> }
+        render={(props) => 
+        <Register {...props} 
+        loadUser={this.loadUser} 
+        onRouteChange={this.onRouteChange}
+        /> }
       />
+      <Menu />
       <Redirect to="/" />
 
-      { this.state.route !== 'signin' 
+      { this.state.route === 'signin' 
         ?
         <div>
           <Link to={"/login"}> <SigninBtn /> </Link>
