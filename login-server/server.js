@@ -25,9 +25,11 @@ server.get('/', (req, res) => {
 server.post('/login', (req, res) => {
     db.handleSignin(req.body) 
         .then(data => {
+        //check encrypted password with users password
         const isValid = bcrypt.compareSync(req.body.password, data[0].password)
         console.log(isValid)
         if(isValid) {
+            //check if the password is valid
             return db.getEmail(req.body)
             .then(user => {
                 console.log(user)
@@ -61,12 +63,3 @@ server.post('/register', (req, res) => {
 server.listen(PORT, () => {
     console.log('running on ', PORT)
 })
-
-
-
-
-
-// server.post('/register', (req, res) => {
-//     db.registerUser(req.body)
-//         .then(res.sendStatus(200))
-// })
