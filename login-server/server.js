@@ -21,18 +21,24 @@ server.get('/', (req, res) => {
         })
 })
 
-// server.post('/register', (req, res) => {
-//     db.registerUser(req.body)
-//         .then(res.sendStatus(200))
-// })
 
 server.post('/login', (req, res) => {
-    if(req.body.email === db.users[0].email &&
-        req.body.password === db.users[0].password) {
-            res.json('success')
+    db.handleSignin(req.body) 
+        .then(data => {
+        const isValid = bcrypt.compareSync(req.body.password, data[0].password)
+        console.log(isValid)
+        if(isValid) {
+            return db.getEmail(req.body)
+            .then(user => {
+                console.log(user)
+                res.json(user)
+            })
+            .catch(err => res.status(400).json('unable to get user'))
         } else {
-            res.status(400).json('err loggin in')
+            res.status(400).json('incorrect details')
         }
+        })
+        .catch(err => res.status(400).json('error'))
 })
 
 server.get('/profile/:id', (req, res) => {
@@ -55,3 +61,12 @@ server.post('/register', (req, res) => {
 server.listen(PORT, () => {
     console.log('running on ', PORT)
 })
+
+
+
+
+
+// server.post('/register', (req, res) => {
+//     db.registerUser(req.body)
+//         .then(res.sendStatus(200))
+// })

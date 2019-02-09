@@ -6,7 +6,9 @@ const connection = require('knex')(config)
 module.exports = {
   getUsers,
   registerUser,
-  profile
+  profile,
+  handleSignin,
+  getEmail
 }
 
 function getUsers(db = connection) {
@@ -26,4 +28,16 @@ function profile(id, db = connection) {
   return db('register')
     .where('id', id)
     .first()
+}
+
+function handleSignin(user, db = connection) {
+  return db('register')
+    .where('email', user.email)
+    .select('email', 'password')
+}
+
+function getEmail(user, db=connection) {
+  return db('register')
+    .select()
+    .where('email', user.email)
 }
