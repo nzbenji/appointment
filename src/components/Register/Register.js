@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Input, Container, Header } from 'semantic-ui-react';
+import {Link} from 'react-router-dom';
 
 class Register extends Component {
     constructor(props) {
@@ -13,15 +14,41 @@ class Register extends Component {
         }
     }
 
-    onChange = event => {
-        const { name, value } = event.target
-
-        //set corresponding state key (username/pass/email) 
-        //to specific objects keys value
+    onEmailChange = (event) => {
         this.setState({
-            [name] : value
+          email: event.target.value
         })
-    }
+      }
+      onUsernameChange = (event) => {
+        this.setState({
+          username: event.target.value
+        })
+      }
+      onPasswordChange = (event) => {
+        this.setState({
+            password: event.target.value
+        })
+      }
+
+      onSubmit = () => {
+        fetch('http://localhost:3001/register', {
+          method: 'post',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            email: this.state.email,
+            password: this.state.password,
+            name: this.state.username
+          })
+        })
+          .then(res => res.json())
+          .then(user => {
+            if(user === 'success') {
+                this.props.loadUser(user)
+              this.props.onRouteChange('home')
+            }
+          })
+        
+      }
 
     render() {
         console.log(this.state.username)
@@ -32,21 +59,33 @@ class Register extends Component {
                     <Header as="h2">Register</Header>
                     <Input
                         name="username"
-                        onChange={this.onChange}
+                        onChange={this.onUsernameChange}
                         value={username}
                         placeholder="Username"
                         fluid
                     />
-                    <Input name="email" onChange={this.onChange} value={email} placeholder="Email" fluid />
+                    <Input 
+                        name="email" 
+                        onChange={this.onEmailChange} 
+                        value={email} 
+                        placeholder="Email" 
+                        fluid 
+                    />
                     <Input
                         name="password"
-                        onChange={this.onChange}
+                        onChange={this.onPasswordChange}
                         value={password}
                         type="password"
                         placeholder="Password"
                         fluid
                     />
-                    <Button onClick={this.onSubmit}>Submit</Button>
+                    <Link to={'/'}>
+                        <Button 
+                            onClick={this.onSubmit}
+                        >
+                        Submit</Button>
+                    </Link>
+                    
                 </Container>
             </div>
         )

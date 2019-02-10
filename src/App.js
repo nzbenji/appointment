@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Route} from 'react-router-dom';
 //import { Container } from 'semantic-ui-react';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 import './App.css';
 
@@ -18,8 +18,29 @@ class App extends Component {
     super(props)
 
     this.state = {
-      route: 'signin'
+      route: 'signin',
+      user: {
+        id: '', 
+        name: '',
+        email: '',
+        password: ''
+      }
     }
+  }
+
+  loadUser = (data) => {
+    this.state = ({user:{
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      password: data.password
+    }})
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:3001/')
+      .then(response => response.json())
+      .then(console.log)
   }
 
   onRouteChange = (route) => {
@@ -32,9 +53,12 @@ class App extends Component {
     console.log(this.state.route)
     return (
       <div className="App">
-      <Route exact path="/register" component={Register} />
+      <Route exact path="/register" 
+        render={(props) => <Register {...props} loadUser={this.loadUser} /> }
+      />
+      <Redirect to="/" />
 
-      { this.state.route === 'signin' 
+      { this.state.route !== 'signin' 
         ?
         <div>
           <Link to={"/login"}> <SigninBtn /> </Link>
@@ -46,6 +70,7 @@ class App extends Component {
               render={(props) => <SignoutBtn {...props} onRouteChange={this.onRouteChange} /> } 
             />
           </Link>
+          <Redirect to="/" />
           <Route exact path="/" component={Home} />
           
         </div>
