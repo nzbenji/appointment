@@ -14,6 +14,26 @@ class Register extends Component {
         }
     }
 
+    onSubmit = () => {
+        fetch('http://localhost:3001/register', {
+          method: 'post',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            email: this.state.email,
+            password: this.state.password,
+            name: this.state.username
+          })
+        })
+          .then(user => {
+              console.log(user)
+            if(user === 'success') {
+                this.props.loadUser(user)
+              this.props.onRouteChange('home')
+            }
+          })
+        
+    }
+
     onEmailChange = (event) => {
         this.setState({
           email: event.target.value
@@ -30,25 +50,6 @@ class Register extends Component {
         })
       }
 
-      onSubmit = () => {
-        fetch('http://localhost:3001/register', {
-          method: 'post',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            email: this.state.email,
-            password: this.state.password,
-            name: this.state.username
-          })
-        })
-          .then(res => res.json())
-          .then(user => {
-            if(user === 'success') {
-                this.props.loadUser(user)
-              this.props.onRouteChange('home')
-            }
-          })
-        
-      }
 
     render() {
         console.log(this.state.username)
@@ -93,3 +94,7 @@ class Register extends Component {
 }
 
 export default Register
+
+
+
+

@@ -3,82 +3,62 @@ const bodyParser = require('body-parser')
 const server = express()
 const bcrypt = require('bcrypt-nodejs')
 const cors = require('cors')
+const db = require('./db/db')
 
 server.use(bodyParser.json())
 server.use(cors())
 
 const PORT = 3001
 
-const db = {
-    users: [
-        {
-            id: '1', 
-            name: 'john',
-            email: 'john@john.com',
-            password: '1234'
-        },
-        {
-            id: '2', 
-            name: 'sally',
-            email: 'sally@sally.com',
-            password: '4321'
-        }
-    ]
-}
 
 server.get('/', (req, res) => {
-    res.send(db.users)
+    db.getUsers()
+        .then(users => {
+            res.send(users)
+        })
+        .catch(err => {
+            res.status(500).send(err.message)
+        })
 })
-server.post('/login', (req, res) => {
-    // bcrypt.compare("1234", hash, function(err, res) {
-    // });
-    // bcrypt.compare("veggies", hash, function(err, res) {
-    // });
-    
 
-    if(req.body.email === db.users[0].email &&
-        req.body.password === db.users[0].password) {
-            res.json('success')
+
+server.post('/login', (req, res) => {
+    db.handleSignin(req.body) 
+        .then(data => {
+        //check encrypted password with users password
+        const isValid = bcrypt.compareSync(req.body.password, data[0].password)
+        console.log(isValid)
+        if(isValid) {
+            //check if the password is valid
+            return db.getEmail(req.body)
+            .then(user => {
+                console.log(user)
+                res.json(user)
+            })
+            .catch(err => res.status(400).json('unable to get user'))
         } else {
-            res.status(400).json('err loggin in')
+            res.status(400).json('incorrect details')
         }
+        })
+        .catch(err => res.status(400).json('error'))
 })
 
 server.get('/profile/:id', (req, res) => {
-    const { id } = req.params
-    let found = false
-    db.users.forEach(user => {
-        if(user.id === id) {
-            found = true
-            return res.json(user)
-        }
-    })
-    if(!found) {
-        res.status(404).json('no such user')
-    }
+    db.profile(Number(req.params.id))
+        .then(user => {
+            res.json(user)
+        })
+        .catch(err => res.status(400).json('Not found'))
 })
 
 server.post('/register', (req, res) => {
-    const { email, name, password } = req.body
+    db.registerUser(req.body, bcrypt)
+        .then(user => {
+            res.json(user[0])
+        })
+        .catch(err => res.status(400).json('unable to register'))
 
-    //return an encrypted hash password
-    bcrypt.hash(password, null, null, (err, hash) => {
-        // Store hash in your password DB.
-        console.log(hash)
-    });
-
-    db.users.push({
-        id: '123', 
-        name: name,
-        email: email,
-        password: password
-    })
-    //grabs last added item in arr
-    res.json(db.users[db.users.length-1])
 })
-
-
-
 
 server.listen(PORT, () => {
     console.log('running on ', PORT)
