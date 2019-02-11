@@ -12,7 +12,7 @@ import SigninBtn from './components/Signin/SigninBtn'
 import SignoutBtn from './components/Signout/SignoutBtn'
 import Register from './components/Register/Register'
 
-import Menu from './components/Menu'
+
 
 import { getUsers } from './api'
 
@@ -64,7 +64,7 @@ class App extends Component {
         onRouteChange={this.onRouteChange}
         /> }
       />
-      <Menu />
+
       <Redirect to="/" />
 
       { this.state.route === 'signin' 

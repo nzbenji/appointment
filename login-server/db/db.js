@@ -8,7 +8,7 @@ module.exports = {
   registerUser,
   profile,
   handleSignin,
-  getEmail
+  getUser
 }
 
 function getUsers(db = connection) {
@@ -36,7 +36,7 @@ function handleSignin(user, db = connection) {
     .select('email', 'password')
 }
 
-function getEmail(user, db=connection) {
+function getUser(user, db=connection) {
   return db('register')
     .select()
     .where('email', user.email)

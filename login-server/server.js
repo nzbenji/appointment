@@ -21,7 +21,6 @@ server.get('/', (req, res) => {
         })
 })
 
-
 server.post('/login', (req, res) => {
     db.handleSignin(req.body) 
         .then(data => {
@@ -29,18 +28,19 @@ server.post('/login', (req, res) => {
         const isValid = bcrypt.compareSync(req.body.password, data[0].password)
         console.log(isValid)
         if(isValid) {
-            //check if the password is valid
-            return db.getEmail(req.body)
+            //Get User
+             return db.getUser(req.body)
             .then(user => {
                 console.log(user)
                 res.json(user)
+                
             })
             .catch(err => res.status(400).json('unable to get user'))
         } else {
             res.status(400).json('incorrect details')
         }
-        })
-        .catch(err => res.status(400).json('error'))
+         })
+         .catch(err => res.status(400).json('error'))
 })
 
 server.get('/profile/:id', (req, res) => {
