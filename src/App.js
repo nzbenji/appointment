@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Route} from 'react-router-dom';
 //import { Container } from 'semantic-ui-react';
 import {Link, Redirect} from 'react-router-dom';
+import { Button, Menu } from 'semantic-ui-react'
 
 import './App.css';
 
@@ -11,11 +12,6 @@ import LoginForm from './components/Signin/Signin'
 import SigninBtn from './components/Signin/SigninBtn'
 import SignoutBtn from './components/Signout/SignoutBtn'
 import Register from './components/Register/Register'
-
-
-
-import { getUsers } from './api'
-
 
 class App extends Component {
   constructor(props) {
@@ -54,6 +50,7 @@ class App extends Component {
   }
 
   render() {
+    const { route } = this.state
     console.log(this.state.route)
     return (
       <div className="App">
@@ -70,17 +67,39 @@ class App extends Component {
       { this.state.route === 'signin' 
         ?
         <div>
-          <Link to={"/login"}> <SigninBtn /> </Link>
-        </div>
+        <Menu size='large'>
+          <Menu.Item name='home' active={route === 'home'} onClick={this.onRouteChange} />
+
+          <Menu.Menu position='right'>
+            <Menu.Item>
+              <Link to={"/login"}><SigninBtn onRouteChange={this.onRouteChange}/></Link>
+              <Button primary>Sign Up</Button>
+            </Menu.Item>
+          </Menu.Menu>
+        </Menu>
+      </div>
         :
         <div>
-          <Link to={'/'}>
+          {/* <Link to={'/'}>
             <Route exact path="/" 
               render={(props) => <SignoutBtn {...props} onRouteChange={this.onRouteChange} /> } 
             />
           </Link>
           <Redirect to="/" />
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={Home} /> */}
+
+          <Menu size='large'>
+            <Menu.Item name='home' active={route === 'home'} onClick={this.onRouteChange} />
+
+            <Menu.Menu position='right'>
+              <Menu.Item>
+                <Link to={'/'}>
+                  <SignoutBtn onRouteChange={this.onRouteChange}/> 
+              </Link>
+                <Button primary>Sign Up</Button>
+              </Menu.Item>
+            </Menu.Menu>
+        </Menu>
           
         </div>
     }

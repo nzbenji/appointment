@@ -17,7 +17,8 @@ class Header extends Component {
     return (
       <div>
         <Menu size='large'>
-        <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} />
+        <Menu.Item name='home' 
+         onClick={this.handleItemClick} />
 
         <Menu.Menu position='right'>
           <Menu.Item>

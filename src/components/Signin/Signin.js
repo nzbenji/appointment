@@ -34,11 +34,13 @@ class LoginForm extends React.Component {
     })
       .then(response => response.json())
       .then(data => {
+        console.log(data)
+        this.props.onRouteChange('home')
         //if(data === 'success') 
-        if(data.id) {
-          this.props.onRouteChange('home')
-         //return <Redirect to="/" />
-        }
+        // if(data.id) {
+        //   this.props.onRouteChange('home')
+        //  //return <Redirect to="/" />
+        // }
       })
     
   }
