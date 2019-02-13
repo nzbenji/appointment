@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 class LoginForm extends React.Component {
   constructor(props){
@@ -36,12 +36,14 @@ class LoginForm extends React.Component {
       .then(data => {
         console.log(data)
         this.props.onRouteChange('home')
+        return <Redirect to="/" />
         //if(data === 'success') 
         // if(data.id) {
         //   this.props.onRouteChange('home')
-        //  //return <Redirect to="/" />
+        //  //return 
         // }
       })
+      
     
   }
 

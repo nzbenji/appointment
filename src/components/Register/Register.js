@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Input, Container, Header } from 'semantic-ui-react';
+import { Button, Input, Container, Header, Menu } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
+import SigninBtn from '../Signin/SigninBtn'
 
 class Register extends Component {
     constructor(props) {
@@ -56,6 +57,7 @@ class Register extends Component {
         const { username, password, email } = this.state
         return (
             <div>
+
                 <Container text>
                     <Header as="h2">Register</Header>
                     <Input

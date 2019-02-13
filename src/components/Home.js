@@ -8,7 +8,6 @@ class Home extends Component {
     return (
       <div>
         <Header />
-      <Link to={"/appointment"}>Select an appointment</Link>
       </div>
       
     )
