@@ -10,4 +10,4 @@
 - [x] Login System
 - [x] Password hashing for security
 - [x] Appointment calendar
-- [] Appointment booking system
+- [ ] Appointment booking system
